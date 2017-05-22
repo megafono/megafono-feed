@@ -12,7 +12,7 @@
 
 (defn all []
   (into [] (select channels
-    (fields :uid :name))))
+    (fields :slug :name))))
 
 (defn find_by_slug [slug]
   (first
