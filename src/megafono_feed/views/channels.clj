@@ -24,7 +24,5 @@
 
 (defn show [channel]
   (log/info channel)
-  (rss/feed channel [{:id      1
-                      :title   "Test post"
-                      :content "Some content"
-                      :time    (new Date)}]))
+  (if channel (rss/feed channel [])
+              (ring.util.response/not-found "channel not found")))
