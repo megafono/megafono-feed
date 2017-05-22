@@ -17,5 +17,7 @@
 (defn find_by_slug [slug]
   (first
     (select channels
-      (where {:slug slug})
-      (limit 1))))
+            (where {:slug slug
+                    :deleted_at nil
+                    :status [not= "pending"]})
+            (limit 1))))
