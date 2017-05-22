@@ -15,9 +15,8 @@
          (xml/tag :pubDate nil (time/format-rss time))
          (xml/tag :category nil "clojure"))))
 
-
 (defn channel-build [channel posts]
-  (let [created_at (time/format-rss (:created_at channel))]
+  (let [created_at (time/format-rss (:updated_at channel))]
     (let [title (:name channel)]
       (xml/tag :rss {:version "2.0"
                  :xmlns:dc "http://purl.org/dc/elements/1.1/"
@@ -49,7 +48,7 @@
                 (xml/tag :itunes:subtitle nil (:subtitle channel))
                 ;(tag :image>...</image>
                 ;(tag :itunes:category text="Technology">...</itunes:category>
-                (xml/tag :copyright nil (:copyright channel))
+                (xml/tag :copyright nil (str (:copyright channel)))
                 (xml/tag :dc:title nil title)
                 (xml/tag :dc:description nil (xml/strip-html (:body channel)))
                 ;(tag :dc:creator>Emerson Almeida</dc:creator>
