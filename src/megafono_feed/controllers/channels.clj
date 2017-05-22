@@ -9,7 +9,7 @@
   (view/index (model/all)))
 
 (defn show [slug]
-  (view/show (model/find_by_slug slug)))
+  (view/show (model/find-by-slug slug)))
 
 (defroutes routes
            (GET "/" [] (index))
