@@ -13,4 +13,5 @@
 
 (defroutes routes
            (GET "/" [] (index))
+           (GET "/favicon.ico" [] "")
            (GET "/:slug" [slug] (show slug)))
