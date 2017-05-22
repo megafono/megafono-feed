@@ -14,11 +14,16 @@
                  [org.clojure/data.xml "0.0.8"]
                  [heroku-database-url-to-jdbc "0.2.2"]
                  [korma "0.4.3"]
-                 [clj-soup/clojure-soup "0.1.3"]]
+                 [clj-soup/clojure-soup "0.1.3"]
+                 [environ "1.0.0"]]
+  :min-lein-version "2.0.0"
   :main ^:skip-aot megafono_feed.core
   :uberjar-name "megafono_feed-standalone.jar"
-  :plugins [[lein-ring "0.8.13"]]
+  :plugins [[lein-ring "0.8.13"]
+            [environ/environ.lein "0.3.1"]]
+  :hooks [environ.leiningen.hooks]
   :ring {:handler megafono_feed.core/application}
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]]}
+             :production {:env {:production true}}
              :uberjar {:aot :all}})
