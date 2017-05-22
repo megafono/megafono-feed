@@ -11,10 +11,12 @@
                  [hiccup "1.0.5"]
                  [ring/ring-defaults "0.1.2"]
                  [org.clojure/tools.logging "0.3.1"]
+                 [org.clojure/data.xml "0.0.8"]
                  [heroku-database-url-to-jdbc "0.2.2"]
-                 [korma "0.4.3"]]
+                 [korma "0.4.3"]
+                 [clj-soup/clojure-soup "0.1.3"]]
   :main ^:skip-aot megafono_feed.core
-  :uberjar-name "megafono-feed-standalone.jar"
+  :uberjar-name "megafono_feed-standalone.jar"
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler megafono_feed.core/application}
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
