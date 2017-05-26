@@ -1,15 +1,16 @@
 (ns megafono_feed.controllers.channels
   (:require [compojure.core :refer [defroutes GET]]
             [clojure.string :as str]
-            [ring.util.response :as ring]
+            [ring.util.response :as r]
             [megafono_feed.views.channels :as view]
-            [megafono_feed.models.channel :as model]))
+            [megafono_feed.models.channel :as channel]))
 
 (defn index []
-  (view/index (model/all)))
+  (view/index (channel/all)))
 
 (defn show [slug]
-  (view/show (model/find-by-slug slug)))
+  (-> (r/response (->> (view/show (channel/find-by-slug slug))))
+      (r/header "Content-Type" "application/xml; charset=utf-8")))
 
 (defroutes routes
            (GET "/" [] (index))
