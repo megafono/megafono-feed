@@ -23,6 +23,5 @@
                  (display-channels channels)))
 
 (defn show [channel]
-  (log/info channel)
-  (if channel (rss/feed channel [])
+  (if channel (rss/feed channel)
               (ring.util.response/not-found "channel not found")))
