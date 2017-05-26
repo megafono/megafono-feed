@@ -15,7 +15,8 @@
                  [heroku-database-url-to-jdbc "0.2.2"]
                  [korma "0.4.3"]
                  [clj-soup/clojure-soup "0.1.3"]
-                 [environ "1.0.0"]]
+                 [environ "1.0.0"]
+                 [blackwater "0.0.9"]]
   :min-lein-version "2.0.0"
   :main ^:skip-aot megafono_feed.core
   :uberjar-name "megafono_feed-standalone.jar"
