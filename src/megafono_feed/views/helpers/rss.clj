@@ -10,16 +10,16 @@
          (xml/tag :title nil (:title episode))
          (xml/tag :pubDate nil (time/format-rss (:published_at episode))))))
 
-(defn channel-build [channel]
+(defn channel-build [channel owner]
   (let [created_at (time/format-rss (:updated_at channel))]
     (let [title (:name channel)]
       (xml/tag :rss {:version "2.0"
-                 :xmlns:dc "http://purl.org/dc/elements/1.1/"
-                 :xmlns:sy "http://purl.org/rss/1.0/modules/syndication/"
-                 :xmlns:itunes "http://www.itunes.com/dtds/podcast-1.0.dtd"
-                 :xmlns:atom "http://www.w3.org/2005/Atom"
-                 :xmlns:content "http://purl.org/rss/1.0/modules/content/"
-                 :xmlns:rawvoice "http://www.rawvoice.com/rawvoiceRssModule/"}
+                     :xmlns:itunes "http://www.itunes.com/dtds/podcast-1.0.dtd"
+                     :xmlns:atom "http://www.w3.org/2005/Atom"
+                     :xmlns:sy "http://purl.org/rss/1.0/modules/syndication/"
+                     :xmlns:dc "http://purl.org/dc/elements/1.1/"
+                     :xmlns:content "http://purl.org/rss/1.0/modules/content/"
+                     :xmlns:rawvoice "http://www.rawvoice.com/rawvoiceRssModule/"}
            (update-in
              (xml/tag :channel nil
                   (xml/tag :title nil title)
@@ -33,23 +33,26 @@
                   (xml/tag :sy:updateFrequency nil "1")
                   (xml/tag :generator nil "Megafono Feed v1.0.0 (+https://www.megafono.io/>")
                   (xml/tag :itunes:summary nil (xml/strip-html (:body channel)))
-                  (xml/tag :itunes:author nil "TODO: Emerson Almeida")
-                  (xml/tag :itunes:explicit nil "TODO" )
-                  (xml/tag :itunes:image {:href "TODO"})
+                  (xml/tag :itunes:author nil (:name owner))
+                  (xml/tag :itunes:explicit nil (if (= (:rating channel) 1) "Yes" "No") )
+                  (xml/tag :itunes:image {:href (url/build-image-url (:id channel) (:artwork channel))})
                   (xml/tag :itunes:owner nil
-                       (xml/tag :itunes:name nil "TODO: name")
-                       (xml/tag :itunes:email nil "TODO: email"))
-                  ;(tag :managingEditor>emerson@megafono.io (Emerson Almeida)</managingEditor>
+                           (xml/tag :itunes:name nil (:name owner))
+                           (xml/tag :itunes:email nil (:email owner)))
+                  (xml/tag :managingEditor nil "emerson@megafono.io (Emerson Almeida)")
                   (xml/tag :itunes:subtitle nil (:subtitle channel))
-                  ;(tag :image>...</image>
+                  (xml/tag :image nil
+                           (xml/tag :title nil title)
+                           (xml/tag :url nil (url/build-image-url (:id channel) (:artwork channel)))
+                           (xml/tag :link nil (url/build-site-url (:slug channel))))
                   ;(tag :itunes:category text="Technology">...</itunes:category>
                   (xml/tag :copyright nil (str (:copyright channel)))
                   (xml/tag :dc:title nil title)
                   (xml/tag :dc:description nil (xml/strip-html (:body channel)))
-                  ;(tag :dc:creator>Emerson Almeida</dc:creator>
+                  (xml/tag :dc:creator nil (:name owner))
                   (xml/tag :webMaster nil "webmaster@megafono.io (Megafono)"))
              [:content]
              into (map (partial episode-build channel) (:episodes channel)))))))
 
-(defn feed [channel]
-  (with-out-str (emit (channel-build channel))))
+(defn feed [channel owner]
+  (with-out-str (emit (channel-build channel owner))))
