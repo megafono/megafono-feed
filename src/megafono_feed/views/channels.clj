@@ -23,6 +23,7 @@
                  (display-channels channels)))
 
 (defn show [channel]
+  (log/info (:categories channel))
   (let [owner (first (:channel_ownerships channel))]
     (if channel (rss/feed channel owner)
                 (ring.util.response/not-found "channel not found"))))

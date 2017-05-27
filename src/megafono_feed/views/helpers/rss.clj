@@ -8,7 +8,24 @@
   (let [link (str channel "/" (:id episode) )]
     (xml/tag :item nil
          (xml/tag :title nil (:title episode))
-         (xml/tag :pubDate nil (time/format-rss (:published_at episode))))))
+         (xml/tag :dc:title nil (:title episode))
+         ;; (xml/tag :link nil (:title episode))
+         (xml/tag :pubDate nil (time/format-rss (:published_at episode)))
+         ;; (xml/tag :dc:creator nil (:title episode))
+         (xml/tag :guid {:isPermarlink false} (str (:id episode)))
+         (xml/tag :description nil (xml/strip-html (:body episode)))
+         (xml/tag :content:encoded nil (xml/strip-html (:body episode)))
+         (xml/tag :dc:description nil (xml/strip-html (:body episode)))
+         ;; (xml/tag :enclosure nil (:title episode))
+         ;; (xml/tag :itunes:author nil (:title episode))
+         ;; (xml/tag :itunes:image nil (:title episode))
+         ;; (xml/tag :itunes:duration nil (:title episode))
+         (xml/tag :itunes:explicit nil (if (= (:explict channel) 1) "Yes" "No") )
+         (xml/tag :itunes:subtitle nil (:subtitle episode))
+         (xml/tag :itunes:summary nil (xml/strip-html (:body episode)))
+         ;; (xml/tag :rawvoice:poster nil (:title episode))
+         ;; (xml/tag :rawvoice:embed nil (:title episode))
+         )))
 
 (defn channel-build [channel owner]
   (let [created_at (time/format-rss (:updated_at channel))]
@@ -45,7 +62,10 @@
                            (xml/tag :title nil title)
                            (xml/tag :url nil (url/build-image-url (:id channel) (:artwork channel)))
                            (xml/tag :link nil (url/build-site-url (:slug channel))))
-                  ;(tag :itunes:category text="Technology">...</itunes:category>
+                  ;; (tag :itunes:category text="Technology">...</itunes:category>
+                  ;; (map (:categories channel) (xml/tag :x nil (:name category)))
+                  ;; channel sq (seq (:categories channel))
+                  ;; (log/info (map (fn [category] (:name category)) (:categories channel)))
                   (xml/tag :copyright nil (str (:copyright channel)))
                   (xml/tag :dc:title nil title)
                   (xml/tag :dc:description nil (xml/strip-html (:body channel)))
