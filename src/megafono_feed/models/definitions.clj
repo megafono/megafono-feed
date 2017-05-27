@@ -10,7 +10,13 @@
 
 (use 'korma.core)
 
-(declare channels episodes)
+(declare channels episodes users)
+
+(defentity channel_ownerships
+           (database db)
+           (table :channel_ownerships)
+           (where (:ownerable_type "User"))
+           (belongs-to users {:fk :ownerable_id}))
 
 (defentity episodes
            (database db)
@@ -20,5 +26,9 @@
 (defentity channels
            (database db)
            (has-many episodes {:fk :channel_id})
+           (has-many channel_ownerships {:fk :channel_id})
            (table :channels))
 
+(defentity users
+           (database db)
+           (table :users))
