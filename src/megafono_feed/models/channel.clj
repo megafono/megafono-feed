@@ -1,6 +1,6 @@
 (ns megafono_feed.models.channel
   (:require [clojure.java.jdbc :as sql]
-            [megafono-feed.models.definitions :refer [channels episodes channel_ownerships users db]]))
+            [megafono-feed.models.definitions :refer [channels episodes categories channel_ownerships users db]]))
 
 (use 'korma.core)
 
@@ -16,6 +16,7 @@
   (first
     (select activated_channel
             (with episodes)
+            (with categories)
             (with channel_ownerships
               (where {:ownerable_type "User"
                       :level [in [0 1]]})

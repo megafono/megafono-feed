@@ -27,6 +27,7 @@
   (database db)
   (has-many episodes {:fk :channel_id})
   (has-many channel_ownerships {:fk :channel_id})
+  (many-to-many categories :channel_categories {:lfk :channel_id :rfk :category_id})
   (table :channels))
 
 (defentity users
