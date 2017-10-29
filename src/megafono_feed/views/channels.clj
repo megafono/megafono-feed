@@ -3,7 +3,7 @@
             [megafono-feed.views.helpers.rss :as rss]
             [hiccup.core :refer [h]]
             [hiccup.form :as form]
-            [ring.util.anti-forgery :as anti-forgery]
+            [ring.util.response :as response]
             [clojure.tools.logging :as log])
   (:import (java.util Date)))
 
@@ -26,4 +26,4 @@
   (log/info (:categories channel))
   (let [owner (first (:channel_ownerships channel))]
     (if channel (rss/feed channel owner)
-                (ring.util.response/not-found "channel not found"))))
+                (response/not-found "channel not found"))))
