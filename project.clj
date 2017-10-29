@@ -15,6 +15,7 @@
                  [heroku-database-url-to-jdbc "0.2.2"]
                  [korma "0.4.3"]
                  [clj-soup/clojure-soup "0.1.3"]
+                 [jstrutz/hashids "1.0.1"]
                  [environ "1.0.0"]
                  [blackwater "0.0.9"]]
   :min-lein-version "2.0.0"
@@ -27,4 +28,5 @@
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]]}
              :production {:env {:production true}}
-             :uberjar {:aot :all}})
+             :uberjar {:aot :all}}
+  :jvm-opts ["-Duser.timezone=UTC"])
