@@ -3,9 +3,8 @@
             [megafono-feed.views.helpers.rss :as rss]
             [hiccup.core :refer [h]]
             [hiccup.form :as form]
-            [ring.util.response :as response]
-            [clojure.tools.logging :as log])
-  (:import (java.util Date)))
+            [ring.util.response :as r]
+            [clojure.tools.logging :as log]))
 
 (defn display-channels [channels]
   [:ul
@@ -22,8 +21,12 @@
                  [:div]
                  (display-channels channels)))
 
-(defn show [channel]
+(defn show [channel slug]
   (log/info (:categories channel))
   (let [owner (first (:channel_ownerships channel))]
-    (if channel (rss/feed channel owner)
-                (response/not-found "channel not found"))))
+    (if channel
+                (if (= slug (:slug channel))
+                  (r/response (rss/feed channel owner))
+                  (r/redirect (:slug channel) :moved-permanently)
+                )
+                (r/not-found ""))))

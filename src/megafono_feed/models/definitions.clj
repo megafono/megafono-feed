@@ -37,3 +37,7 @@
 (defentity categories
   (database db)
   (table :categories))
+
+(defentity slugs
+  (database db)
+  (table :friendly_id_slugs))

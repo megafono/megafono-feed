@@ -9,7 +9,7 @@
   (view/index (channel/all)))
 
 (defn show [slug]
-  (-> (r/response (->> (view/show (channel/find-by-slug slug))))
+  (-> (view/show (channel/find-by-slug slug) slug)
       (r/header "Content-Type" "application/xml; charset=utf-8")))
 
 (defroutes routes
