@@ -14,6 +14,7 @@
                  [org.clojure/data.xml "0.0.8"]
                  [heroku-database-url-to-jdbc "0.2.2"]
                  [korma "0.4.3"]
+                 [clj-time "0.14.0"]
                  [clj-soup/clojure-soup "0.1.3"]
                  [jstrutz/hashids "1.0.1"]
                  [environ "1.0.0"]
