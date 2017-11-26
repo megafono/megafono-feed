@@ -57,7 +57,7 @@
                           (xml/tag :itunes:owner nil
                                    (xml/tag :itunes:name nil (:name owner))
                                    (xml/tag :itunes:email nil (:email owner)))
-                          (xml/tag :managingEditor nil "emerson@megafono.io (Emerson Almeida)")
+                          (xml/tag :managingEditor nil (apply str [(:email owner) " (" (:name owner) ")"]))
                           (xml/tag :itunes:subtitle nil (:subtitle channel))
                           (xml/tag :image nil
                                    (xml/tag :title nil title)
