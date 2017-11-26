@@ -19,7 +19,7 @@
              (xml/tag :enclosure {:url (url/build-episode-media-url episode channel)})
              (xml/tag :itunes:author nil (:name owner))
              ;; (xml/tag :itunes:image nil (:title episode))
-             ;; (xml/tag :itunes:duration nil (:title episode))
+             (xml/tag :itunes:duration nil (str (:duration episode)))
              (xml/tag :itunes:explicit nil (if (= (:explict channel) 1) "Yes" "No") )
              (xml/tag :itunes:subtitle nil (:subtitle episode))
              (xml/tag :itunes:summary nil (xml/strip-html (:body episode)))
