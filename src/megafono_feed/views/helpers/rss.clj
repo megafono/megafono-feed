@@ -1,5 +1,5 @@
 (ns megafono-feed.views.helpers.rss
-  (:use [clojure.xml :only [emit]])
+  (:use [clojure.data.xml :only [emit-str]])
   (:require [megafono-feed.views.helpers.time :as time]
             [megafono-feed.views.helpers.xml :as xml]
             [megafono-feed.views.helpers.url :as url]))
@@ -76,4 +76,4 @@
                  into (map (partial episode-build channel owner) (:episodes channel)))))))
 
 (defn feed [channel owner]
-  (with-out-str (emit (channel-build channel owner))))
+  (emit-str (channel-build channel owner)))
