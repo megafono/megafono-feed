@@ -1,5 +1,5 @@
 (ns megafono-feed.views.helpers.rss
-  (:use [clojure.data.xml :only [emit-str]])
+  (:use [clojure.data.xml :only [emit-str cdata]])
   (:require [megafono-feed.views.helpers.time :as time]
             [megafono-feed.views.helpers.xml :as xml]
             [megafono-feed.views.helpers.url :as url]))
@@ -13,7 +13,7 @@
              (xml/tag :pubDate nil (time/format-rss (:published_at episode)))
              (xml/tag :dc:creator nil (:name owner))
              (xml/tag :guid {:isPermarlink false} (str (or (:guid episode) (:id episode))))
-             (xml/tag :description nil (xml/strip-html (:body episode)))
+             (xml/tag :description nil (cdata (:body episode)))
              (xml/tag :content:encoded nil (xml/strip-html (:body episode)))
              (xml/tag :dc:description nil (xml/strip-html (:body episode)))
              (xml/tag :enclosure {:url (url/build-episode-media-url episode channel)})
@@ -65,7 +65,7 @@
                                    (xml/tag :link nil (url/build-site-url (:slug channel))))
                           (xml/tag :copyright nil (str (:copyright channel)))
                           (xml/tag :dc:title nil title)
-                          (xml/tag :dc:description nil (xml/strip-html (:body channel)))
+                          (xml/tag :dc:description nil (cdata (:body channel)))
                           (xml/tag :dc:creator nil (:name owner))
                           (xml/tag :webMaster nil "webmaster@megafono.io (Megafono)"))
                  [:content]
