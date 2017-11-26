@@ -11,7 +11,7 @@
                  [hiccup "1.0.5"]
                  [ring/ring-defaults "0.1.2"]
                  [org.clojure/tools.logging "0.3.1"]
-                 [org.clojure/data.xml "0.0.8"]
+                 [org.clojure/data.xml "0.2.0-alpha5"]
                  [heroku-database-url-to-jdbc "0.2.2"]
                  [korma "0.4.3"]
                  [clj-time "0.14.0"]
