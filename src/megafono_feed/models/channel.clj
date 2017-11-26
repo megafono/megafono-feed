@@ -15,12 +15,11 @@
 (def activated_channel (-> (select* channels)
                            (modifier "DISTINCT")
                            (join :inner slugs (and
-                                               (= :friendly_id_slugs.sluggable_id :id)
-                                               (= :friendly_id_slugs.sluggable_type "Channel")))
+                                                (= :friendly_id_slugs.sluggable_id :id)
+                                                (= :friendly_id_slugs.sluggable_type "Channel")))
                            (where {:deleted_at nil
                                    :status [not= "pending"]})
                            (order :name)))
-
 
 (def activated_channel_with_relashionship (-> (select* activated_channel)
                                                    (with categories)
@@ -41,6 +40,6 @@
 
 (defn find-by-slug [slug]
   (first
-   (select activated_channel_with_relashionship
-           (where {:friendly_id_slugs.slug slug})
-           (limit 1))))
+    (select activated_channel_with_relashionship
+            (where {:friendly_id_slugs.slug slug})
+            (limit 1))))

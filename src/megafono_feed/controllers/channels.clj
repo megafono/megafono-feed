@@ -13,7 +13,7 @@
       (r/header "Content-Type" "application/xml; charset=utf-8")))
 
 (defroutes routes
-           (GET "/" [] (index))
-           (GET "/favicon.ico" [] "")
-           (GET "/serviceworker.js" [] "")
-           (GET "/:slug" [slug] (show slug)))
+  (GET "/" [] (index))
+  (GET "/favicon.ico" [] "")
+  (GET "/serviceworker.js" [] "")
+  (GET "/:slug" [slug] (show slug)))
