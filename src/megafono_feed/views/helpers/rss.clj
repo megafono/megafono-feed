@@ -63,17 +63,13 @@
                                    (xml/tag :title nil title)
                                    (xml/tag :url nil (url/build-image-url (:id channel) (:artwork channel)))
                                    (xml/tag :link nil (url/build-site-url (:slug channel))))
-                          ;; (tag :itunes:category text="Technology">...</itunes:category>
-                          ;; (map (fn [category] (xml/tag :x nil (:name category))) (:categories channel))
-                          ;; channel sq (seq (:categories channel))
-                          ;; (log/info (map (fn [category] (:name category)) (:categories channel)))
                           (xml/tag :copyright nil (str (:copyright channel)))
                           (xml/tag :dc:title nil title)
                           (xml/tag :dc:description nil (xml/strip-html (:body channel)))
                           (xml/tag :dc:creator nil (:name owner))
                           (xml/tag :webMaster nil "webmaster@megafono.io (Megafono)"))
                  [:content]
-                 into (map (partial episode-build channel owner) (:episodes channel)))))))
+                 into (concat (xml/categories-tag (:categories channel)) (map (partial episode-build channel owner) (:episodes channel))))))))
 
 (defn feed [channel owner]
   (emit-str (channel-build channel owner)))
