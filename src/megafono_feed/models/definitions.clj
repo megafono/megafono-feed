@@ -5,12 +5,11 @@
 (decorate-korma!)
 
 (use 'korma.db)
-(defdb db (h/korma-connection-map (or (System/getenv "DATABASE_URL")
-                                      "postgresql://127.0.0.1:5432/megafono_development")))
+(defdb db (h/korma-connection-map (System/getenv "DATABASE_URL")))
 
 (use 'korma.core)
 
-(declare channels episodes users categories)
+(declare channels episodes users categories subscriptions)
 
 (defentity channel_ownerships
   (database db)
@@ -25,6 +24,7 @@
 
 (defentity channels
   (database db)
+  (has-many subscriptions {:fk :channel_id})
   (has-many episodes {:fk :channel_id})
   (has-many channel_ownerships {:fk :channel_id})
   (many-to-many categories :channel_categories {:lfk :channel_id :rfk :category_id})
@@ -36,8 +36,14 @@
 
 (defentity categories
   (database db)
-  (table :categories))
+  (table :categories)
+  (belongs-to categories {:fk :category_id}))
 
 (defentity slugs
   (database db)
   (table :friendly_id_slugs))
+
+(defentity subscriptions
+  (database db)
+  (table :subscriptions)
+  (belongs-to channels {:fk :channel_id}))

@@ -6,6 +6,7 @@
                                                       episodes
                                                       categories
                                                       channel_ownerships
+                                                      subscriptions
                                                       users
                                                       db
                                                       slugs]]))
@@ -22,17 +23,17 @@
                            (order :name)))
 
 (def activated_channel_with_relashionship (-> (select* activated_channel)
-                                                   (with categories)
-                                                   (with episodes
-                                                         (where {:media_status "uploaded"})
-                                                         (where (< :published_at (c/to-sql-time (java.util.Date.))))
-                                                         (order :published_at :DESC))
-                                                   (with channel_ownerships
-                                                         (where {:ownerable_type "User"
-                                                                 :level [in [0 1]]})
-                                                         (limit 1)
-                                                         (with users))))
-
+                                              (with categories)
+                                              (with episodes
+                                                (where {:media_status "uploaded"})
+                                                (where (< :published_at (c/to-sql-time (java.util.Date.))))
+                                                (order :published_at :DESC))
+                                              (with channel_ownerships
+                                                (where {:ownerable_type "User"
+                                                        :level [in [0 1]]})
+                                                (limit 1)
+                                                (with users))
+                                              (with subscriptions)))
 
 (defn all []
   (into [] (select activated_channel
