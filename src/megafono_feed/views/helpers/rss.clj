@@ -14,7 +14,7 @@
              (xml/tag :dc:creator nil (:name owner))
              (xml/tag :guid {:isPermarlink false} (str (or (:guid episode) (:id episode))))
              (xml/tag :description nil (cdata (:body episode)))
-             (xml/tag :content:encoded nil (xml/strip-html (:body episode)))
+             (xml/tag :content:encoded nil (str (:body episode)))
              (xml/tag :dc:description nil (xml/strip-html (:body episode)))
              (xml/tag :enclosure {:url (url/build-episode-media-url episode channel)})
              (xml/tag :itunes:author nil (:name owner))
