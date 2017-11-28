@@ -2,10 +2,12 @@
   (:use [clojure.data.xml :only [emit-str cdata]])
   (:require [megafono-feed.views.helpers.time :as time]
             [megafono-feed.views.helpers.xml :as xml]
-            [megafono-feed.views.helpers.url :as url]))
+            [megafono-feed.views.helpers.url :as url]
+            [clj-time.coerce :refer [from-long]]
+            [clj-time.format :refer [unparse formatter]]))
 
 (defn episode-build [channel owner episode]
-  (let [link (str channel "/" (:id episode) )]
+  (let [link (str channel "/" (:id episode))]
     (xml/tag :item nil
              (xml/tag :title nil (:title episode))
              (xml/tag :dc:title nil (:title episode))
@@ -16,16 +18,25 @@
              (xml/tag :description nil (cdata (:body episode)))
              (xml/tag :content:encoded nil (str (:body episode)))
              (xml/tag :dc:description nil (xml/strip-html (:body episode)))
-             (xml/tag :enclosure {:url (url/build-episode-media-url episode channel)})
+             (xml/tag :enclosure {:url (url/build-episode-media-url episode) :length (:media_length episode) :type (:media_content_type episode)})
              (xml/tag :itunes:author nil (:name owner))
-             ;; (xml/tag :itunes:image nil (:title episode))
-             (xml/tag :itunes:duration nil (str (:duration episode)))
+             (xml/tag :itunes:image {:url (url/build-episode-image-url episode channel)})
+
+             (if (zero? (:season episode)) "" (xml/tag :itunes:season nil (:season episode)))
+             (if (zero? (:number episode)) "" (xml/tag :itunes:episode nil (:number episode)))
+
+             (xml/tag :itunes:episodeType nil (:submission_type episode))
+             (xml/tag :itunes:duration nil (if (nil? (:duration episode))
+                                             "00:00:00"
+                                             (unparse (formatter "HH:mm:ss") (from-long (long (* 1000 (:duration episode)))))))
              (xml/tag :itunes:explicit nil (if (= (:explict channel) 1) "Yes" "No") )
              (xml/tag :itunes:subtitle nil (:subtitle episode))
              (xml/tag :itunes:summary nil (xml/strip-html (:body episode)))
-             ;; (xml/tag :rawvoice:poster nil (:title episode))
-             ;; (xml/tag :rawvoice:embed nil (:title episode))
-             )))
+             (xml/tag :rawvoice:poster {:url (url/build-episode-image-url episode channel)})
+             (xml/tag :rawvoice:embed nil (apply str [
+                                                      "<iframe src=\""
+                                                      (url/build-episode-embed-url episode channel)
+                                                      "\" frameborder=\"0\" allowtransparency=\"true\"></iframe>"])))))
 
 (defn channel-build [channel owner]
   (let [created_at (time/format-rss (:updated_at channel))]
