@@ -1,5 +1,5 @@
-(ns megafono_feed.views.channels
-  (:require [megafono_feed.views.layout :as layout]
+(ns megafono-feed.views.channels
+  (:require [megafono-feed.views.layout :as layout]
             [megafono-feed.views.helpers.rss :as rss]
             [hiccup.core :refer [h]]
             [hiccup.form :as form]

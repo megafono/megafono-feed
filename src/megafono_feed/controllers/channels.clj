@@ -1,9 +1,9 @@
-(ns megafono_feed.controllers.channels
+(ns megafono-feed.controllers.channels
   (:require [compojure.core :refer [defroutes GET]]
             [clojure.string :as str]
             [ring.util.response :as r]
-            [megafono_feed.views.channels :as view]
-            [megafono_feed.models.channel :as channel]))
+            [megafono-feed.views.channels :as view]
+            [megafono-feed.models.channel :as channel]))
 
 (defn index []
   (view/index (channel/all)))

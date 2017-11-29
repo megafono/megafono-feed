@@ -1,10 +1,10 @@
-(ns megafono_feed.core
+(ns megafono-feed.core
   (:require [compojure.core :refer [defroutes]]
             [ring.adapter.jetty :as ring]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [megafono_feed.controllers.channels :as channels]
-            [megafono_feed.views.layout :as layout]
+            [megafono-feed.controllers.channels :as channels]
+            [megafono-feed.views.layout :as layout]
             [environ.core :refer [env]])
   (:gen-class))
 

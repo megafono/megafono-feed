@@ -1,4 +1,4 @@
-(ns megafono_feed.views.layout
+(ns megafono-feed.views.layout
   (:require [hiccup.page :as h]))
 
 (defn common [title & body]

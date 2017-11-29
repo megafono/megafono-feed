@@ -1,6 +1,6 @@
-(defproject megafono_feed "0.1.0"
+(defproject megafono-feed "0.1.0"
   :description "Feed generator app"
-  :url "https://feed.megafono.io"
+  :url "https://feed.megafono.host"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"],
@@ -20,12 +20,12 @@
                  [environ "1.0.0"]
                  [blackwater "0.0.9"]]
   :min-lein-version "2.0.0"
-  :main ^:skip-aot megafono_feed.core
-  :uberjar-name "megafono_feed-standalone.jar"
+  :main ^:skip-aot megafono-feed.core
+  :uberjar-name "megafono-feed-standalone.jar"
   :plugins [[lein-ring "0.8.13"]
             [environ/environ.lein "0.3.1"]]
   :hooks [environ.leiningen.hooks]
-  :ring {:handler megafono_feed.core/application}
+  :ring {:handler megafono-feed.core/application}
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]]}
              :production {:env {:production true}}

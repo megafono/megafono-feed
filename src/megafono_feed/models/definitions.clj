@@ -1,13 +1,23 @@
 (ns megafono-feed.models.definitions
   (:require [heroku-database-url-to-jdbc.core :as h]
+            [korma.db :refer [
+                               defdb
+                             ]]
+            [korma.core :refer [
+                                 defentity
+                                 select
+                                 table
+                                 where
+                                 belongs-to
+                                 many-to-many
+                                 has-many
+                                 database
+                               ]]
             [black.water.korma :refer [decorate-korma!]]))
 
 (decorate-korma!)
 
-(use 'korma.db)
 (defdb db (h/korma-connection-map (System/getenv "DATABASE_URL")))
-
-(use 'korma.core)
 
 (declare channels episodes users categories subscriptions)
 

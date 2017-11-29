@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -jar target/megafono_feed-standalone.jar
+web: java $JVM_OPTS -jar target/megafono-feed-standalone.jar
