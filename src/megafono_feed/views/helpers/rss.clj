@@ -18,7 +18,7 @@
              (xml/tag :description nil (cdata (:body episode)))
              (xml/tag :content:encoded nil (str (:body episode)))
              (xml/tag :dc:description nil (xml/strip-html (:body episode)))
-             (xml/tag :enclosure {:url (url/build-episode-media-url episode) :length (:media_length episode) :type (:media_content_type episode)})
+             (xml/tag :enclosure {:url (url/build-episode-media-url episode channel) :length (:media_length episode) :type (:media_content_type episode)})
              (xml/tag :itunes:author nil (:name owner))
              (xml/tag :itunes:image {:url (url/build-episode-image-url episode channel)})
 
@@ -27,7 +27,7 @@
 
              (xml/tag :itunes:episodeType nil (:submission_type episode))
              (xml/tag :itunes:duration nil (if (nil? (:duration episode))
-                                             "00:00:00"
+                                             nil
                                              (unparse (formatter "HH:mm:ss") (from-long (long (* 1000 (:duration episode)))))))
              (xml/tag :itunes:explicit nil (if (= (:explict channel) 1) "Yes" "No") )
              (xml/tag :itunes:subtitle nil (:subtitle episode))
