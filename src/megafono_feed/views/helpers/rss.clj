@@ -31,10 +31,10 @@
              (xml/tag :itunes:subtitle nil (:subtitle episode))
              (xml/tag :itunes:summary nil (xml/strip-html (:body episode)))
              (xml/tag :rawvoice:poster {:url (url/build-episode-image-url episode channel)})
-             (xml/tag :rawvoice:embed nil (apply str [
+             (xml/tag :rawvoice:embed nil (cdata (apply str [
                                                       "<iframe src=\""
                                                       (url/build-episode-embed-url episode channel)
-                                                      "\" frameborder=\"0\" allowtransparency=\"true\"></iframe>"])))))
+                                                      "\" frameborder=\"0\" allowtransparency=\"true\"></iframe>"]))))))
 
 (defn channel-build [channel owner]
   (let [created_at (time/format-rss (:updated_at channel))]
