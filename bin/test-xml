@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CHANNEL_URI=$1
+
+if [[ ! -f tmp/megafono-host-$CHANNEL_URI.xml ]]; then
+  curl -L -o tmp/megafono-host-$CHANNEL_URI.xml http://localhost:3000/podcast/$CHANNEL_URI/rss.xml
+fi
+
+rm -Rf tmp/megafono-feed.xml
+curl -o tmp/megafono-feed.xml http://localhost:5000/$CHANNEL_URI
+
+./bin/xmldiff --color -Z -B -u <(xmllint tmp/megafono-host-$CHANNEL_URI.xml) <(xmllint tmp/megafono-feed.xml)
+
+
