@@ -2,8 +2,7 @@
   (:require [clojure.java.jdbc :as sql]
             [clj-time.coerce :as c]
             [korma.core :as k]
-            [megafono-feed.models.definitions :refer [
-                                                      channels
+            [megafono-feed.models.definitions :refer [channels
                                                       episodes
                                                       categories
                                                       channel_ownerships
@@ -15,10 +14,10 @@
 (def activated_channel (-> (k/select* channels)
                            (k/modifier "DISTINCT")
                            (k/join :inner slugs (and
-                                                (= :friendly_id_slugs.sluggable_id :id)
-                                                (= :friendly_id_slugs.sluggable_type "Channel")))
+                                                  (= :friendly_id_slugs.sluggable_id :id)
+                                                  (= :friendly_id_slugs.sluggable_type "Channel")))
                            (k/where {:deleted_at nil
-                                   :status [not= "pending"]})
+                                     :status [not= "pending"]})
                            (k/order :name)))
 
 (def activated_channel_with_relashionship (-> (k/select* activated_channel)
@@ -29,7 +28,7 @@
                                                 (k/order :published_at :DESC))
                                               (k/with channel_ownerships
                                                 (k/where {:ownerable_type "User"
-                                                        :level [in [0 1]]})
+                                                          :level [in [0 1]]})
                                                 (k/limit 1)
                                                 (k/with users))
                                               (k/with subscriptions)))

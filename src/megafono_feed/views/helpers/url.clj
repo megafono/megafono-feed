@@ -2,30 +2,21 @@
   (:require [hashids.core :as id]
             [clojure.string :refer [join]]))
 
-(def megafono-host (System/getenv "MEGAFONO_HOST"))
+(defn cdn-endpoint [id] (apply str ["https://" id ".cloudfront.net"]))
 
+(def megafono-host (System/getenv "MEGAFONO_HOST"))
 (def soundcloud-client-id (System/getenv "SI_CLIENT_ID"))
+(def megafono-site-endpoint (apply str ["https://www." megafono-host "/podcast"]))
+(def megafono-feed-endpoint (apply str ["https://feed." megafono-host]))
+(def image-cdn-endpoint (cdn-endpoint "d17choic6g575e"))
+(def episode-cdn-endpoint (cdn-endpoint "d1r52u2wzcgg4y"))
+(def hashids-opts {:salt "MEGAFONO SHORTEN"})
 
 (defn to-url [parts] (join "/" (map str parts)))
 
-(def megafono-site-endpoint (apply str ["https://www." megafono-host "/podcast"]))
-
-(def megafono-feed-endpoint (apply str ["https://feed." megafono-host]))
-
-(defn cdn-endpoint [id] (apply str ["https://" id ".cloudfront.net"]))
-
-(def image-cdn-endpoint (cdn-endpoint "d17choic6g575e"))
-(def episode-cdn-endpoint (cdn-endpoint "d1r52u2wzcgg4y"))
-
-(def hashids-opts {:salt "MEGAFONO SHORTEN"})
-(defn build-episode-url [episode]
-  (apply str ["http://mfn.bz/" (id/encode hashids-opts (:nid episode))]))
-
-(defn build-site-url [slug]
-  (apply str [megafono-site-endpoint "/" slug]))
-
-(defn buid-xml-url [slug]
-  (apply str [megafono-feed-endpoint "/" slug]))
+(defn build-episode-url [episode] (to-url ["http://mfn.bz/" (id/encode hashids-opts (:nid episode))]))
+(defn build-site-url [slug] (to-url [megafono-site-endpoint slug]))
+(defn buid-xml-url [slug] (to-url [megafono-feed-endpoint slug]))
 
 (defn build-image-url
   ([id artwork]
@@ -49,14 +40,12 @@
     "external" (if (goodbye-manual-feed? channel)
                  (:media_url episode)
                  (apply str
-                        [
-                         (to-url [megafono-site-endpoint (:slug channel) (apply str [(:slug episode) ".mp3"])] )
+                        [(to-url [megafono-site-endpoint (:slug channel) (apply str [(:slug episode) ".mp3"])] )
                          "?source=feed"]))
     "s3" (apply str [
-                     (to-url [
-                                episode-cdn-endpoint
-                                (:id episode)
-                                (or (:media_uploaded episode) "audio.mp3")])
-                     "?source=feed"])
+                     (to-url [episode-cdn-endpoint
+                              (:id episode)
+                              (or (:media_uploaded episode) "audio.mp3")])
+                      "?source=feed"])
     "soundcloud" (apply str [(:media_url episode) "?client_id=" soundcloud-client-id])))
 

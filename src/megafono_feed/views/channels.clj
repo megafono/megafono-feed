@@ -25,6 +25,5 @@
     (if channel
       (if (= slug (:slug channel))
         (r/response (rss/feed channel owner))
-        (r/redirect (:slug channel) :moved-permanently)
-        )
+        (r/redirect (:slug channel) :moved-permanently))
       (r/not-found ""))))

@@ -5,8 +5,7 @@
             [megafono-feed.views.channels :as view]
             [megafono-feed.models.channel :as channel]))
 
-(defn index []
-  (view/index (channel/all)))
+(defn index [] (view/index (channel/all)))
 
 (defn show [slug]
   (-> (view/show (channel/find-by-slug slug) slug)

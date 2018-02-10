@@ -24,7 +24,5 @@
 (defn categories-tag [categories]
   (mapcat build-category-tag (group-by :category_id categories)))
 
-(defn strip-html
-  "Function strips HTML tags from string."
-  [s]
+(defn strip-html [s]
   (.text (soup/parse s)))

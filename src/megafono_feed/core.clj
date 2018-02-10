@@ -16,8 +16,8 @@
 (def application (wrap-defaults routes site-defaults))
 
 (defn start [port]
-  (ring/run-jetty application {:port port
-                               :join? false}))
+  (ring/run-jetty application {:port port :join? false}))
+
 (defn -main [& [port]]
   (let [port (Integer. (or port (env :port) 5000))]
     (start port)))
