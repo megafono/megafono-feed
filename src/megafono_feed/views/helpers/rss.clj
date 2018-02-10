@@ -13,18 +13,16 @@
              (xml/tag :dc:title nil (:title episode))
              (xml/tag :link nil (url/build-episode-url episode))
              (xml/tag :pubDate nil (time/format-rss (:published_at episode)))
-             (xml/tag :dc:creator nil (:name owner))
+             (xml/tag :dc:creator nil (cdata (:owner_name channel)))
              (xml/tag :guid {:isPermarlink false} (str (or (:guid episode) (:id episode))))
              (xml/tag :description nil (cdata (:body episode)))
              (xml/tag :content:encoded nil (str (:body episode)))
              (xml/tag :dc:description nil (xml/strip-html (:body episode)))
              (xml/tag :enclosure {:url (url/build-episode-media-url episode channel) :length (:media_length episode) :type (:media_content_type episode)})
-             (xml/tag :itunes:author nil (:name owner))
+             (xml/tag :itunes:author nil (:owner_name channel))
              (xml/tag :itunes:image {:url (url/build-episode-image-url episode channel)})
-
              (if (zero? (:season episode)) "" (xml/tag :itunes:season nil (:season episode)))
              (if (zero? (:number episode)) "" (xml/tag :itunes:episode nil (:number episode)))
-
              (xml/tag :itunes:episodeType nil (:submission_type episode))
              (xml/tag :itunes:duration nil (if (nil? (:duration episode))
                                              nil
@@ -62,13 +60,13 @@
                           (xml/tag :generator nil "Megafono Feed v1.0.0 (+https://www.megafono.io/)")
                           (xml/tag :itunes:summary nil (xml/strip-html (:body channel)))
                           (xml/tag :itunes:type nil (:submission_type channel))
-                          (xml/tag :itunes:author nil (:name owner))
+                          (xml/tag :itunes:author nil (:owner_name channel))
                           (xml/tag :itunes:explicit nil (if (= (:rating channel) 1) "Yes" "No") )
                           (xml/tag :itunes:image {:href (url/build-image-url (:id channel) (:artwork channel))})
                           (xml/tag :itunes:owner nil
-                                   (xml/tag :itunes:name nil (:name owner))
-                                   (xml/tag :itunes:email nil (:email owner)))
-                          (xml/tag :managingEditor nil (apply str [(:email owner) " (" (:name owner) ")"]))
+                                   (xml/tag :itunes:name nil (:owner_name channel))
+                                   (xml/tag :itunes:email nil (:owner_email channel)))
+                          (xml/tag :managingEditor nil (apply str [(:owner_email channel) " (" (:owner_name channel) ")"]))
                           (xml/tag :itunes:subtitle nil (:subtitle channel))
                           (xml/tag :image nil
                                    (xml/tag :title nil title)
@@ -77,8 +75,8 @@
                           (xml/tag :copyright nil (str (:copyright channel)))
                           (xml/tag :dc:title nil title)
                           (xml/tag :dc:description nil (cdata (:body channel)))
-                          (xml/tag :dc:creator nil (:name owner))
                           (xml/tag :webMaster nil "webmaster@megafono.io (Megafono)"))
+                          (xml/tag :dc:creator nil (:owner_name channel))
                  [:content]
                  into (concat (xml/categories-tag (:categories channel)) (map (partial episode-build channel owner) (:episodes channel))))))))
 
