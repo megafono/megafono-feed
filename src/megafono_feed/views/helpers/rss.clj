@@ -75,8 +75,8 @@
                           (xml/tag :copyright nil (str (:copyright channel)))
                           (xml/tag :dc:title nil title)
                           (xml/tag :dc:description nil (cdata (:body channel)))
-                          (xml/tag :webMaster nil "webmaster@megafono.io (Megafono)"))
                           (xml/tag :dc:creator nil (:owner_name channel))
+                          (xml/tag :webMaster nil "support@megafono.host (Megafono)"))
                  [:content]
                  into (concat (xml/categories-tag (:categories channel)) (map (partial episode-build channel owner) (:episodes channel))))))))
 
