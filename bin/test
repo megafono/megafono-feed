@@ -1,0 +1,3 @@
+#!/bin/bash
+
+DATABASE_URL=postgres://postgres@127.0.0.1:5432/megafono_development?sslmode=disable lein test
